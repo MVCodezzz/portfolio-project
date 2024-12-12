@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%= meal.strMeal %> - Recipe Details</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+  <style>
+    .recipe-details-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .recipe-details-container img {
+      max-width: 50%;
+      border-radius: 8px;
+    }
+
+    .recipe-details-container h2 {
+      font-size: 2em;
+      color: #333;
+    }
+
+    .recipe-details-container p {
+      font-size: 1.2em;
+      color: #555;
+    }
+
+    .ingredients-list {
+      margin-top: 20px;
+      text-align: left;
+      padding: 0 20px;
+    }
+
+    .ingredients-list ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .ingredients-list li {
+      font-size: 1em;
+      color: #333;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <body>
+    <header>
+      <h1>Recipe Details</h1>
+    </header>
+
+    <nav>
+      <a href="/">Home</a>
+      <a href="/search-recipes">Search Recipes</a>
+      <a href="/recipe-list">Recipe List</a>
+      <a href="/profile">Profile</a>
+    </nav>
+
+    <main>
+      <section class="recipe-details-container">
+        <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>" />
+        <h2><%= meal.strMeal %></h2>
+        <p><strong>Category:</strong> <%= meal.strCategory %> | <strong>Area:</strong> <%= meal.strArea %></p>
+        <p><strong>Instructions:</strong> <%= meal.strInstructions %></p>
+
+        <div class="ingredients-list">
+          <h3>Ingredients:</h3>
+          <ul>
+            <% for(let i = 1; i <= 20; i++) { %>
+              <% if(meal[`strIngredient${i}`]) { %>
+                <li><%= meal[`strIngredient${i}`] %> - <%= meal[`strMeasure${i}`] %></li>
+              <% } %>
+            <% } %>
+          </ul>
+        </div>
+
+        <a href="<%= meal.strYoutube %>" target="_blank">Watch Recipe Video</a>
+
+        <a href="/recipe-list" class="back-btn">Back to Recipe List</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+name: Production Build
+
+on:
+  push:
+    branches:
+        - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: SSH deploy
+       uses: appleboy/ssh-action@master
+       with:
+          host: 144.126.207.39
+          username:  root
+          key:  ${{ secrets.KEY }}
+          port:  22
+          script: |
+               cd ~/recipefinder-project
+               git stash
+               git pull origin master
+               npm i
+               pm2 restart ecosystem.config.js --env production
+               

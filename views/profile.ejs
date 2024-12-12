@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/main.css" />
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eef2f7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    
+        header {
+            background: linear-gradient(90deg, #1e9bcc, #1478a7);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+    
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    
+        section {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px 40px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+    
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #1478a7;
+        }
+    
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+    
+        form input[type="text"],
+        form input[type="password"],
+        form input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+    
+        form input:focus {
+            border-color: #1e9bcc;
+            outline: none;
+            box-shadow: 0 0 4px rgba(30, 155, 204, 0.3);
+        }
+    
+        form button {
+            background-color: #1e9bcc;
+            color: #fff;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+    
+        form button:hover {
+            background-color: #1478a7;
+            transform: scale(1.02);
+        }
+    
+        p {
+            margin: 15px 0 10px;
+            font-size: 1rem;
+            color: #666;
+        }
+    
+        p#error-message {
+            color: #d9534f;
+            font-weight: bold;
+        }
+    
+        a {
+            color: #1e9bcc;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+    
+        a:hover {
+            color: #1478a7;
+        }
+    
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        footer p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    
+        button#logoutButton {
+            margin-top: 20px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #d9534f;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+    
+        button#logoutButton:hover {
+            background-color: #c9302c;
+            transform: scale(1.02);
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+
+    <nav>
+        <a href="/">Home</a>
+        <!-- <a href="/add-ingredient">Add Ingredient</a> -->
+        <a href="/search-recipes">Search Recipes</a>
+        <a href="/recipe-list">Recipe List</a>
+        <a href="/profile" class="active">Profile</a>
+    </nav>
+
+    <main>
+        <section id="authSection" >
+            <div id="loginContainer">
+                <h2>Login</h2>
+                <form id="loginForm">
+                    <input type="text" id="loginUsername" placeholder="Username" required />
+                    <input type="password" id="loginPassword" placeholder="Password" required />
+                    <button type="submit">Login</button>
+                </form>
+                <p id="loginMessage"></p>
+                <button id="showSignup">Don't have an account? Sign up now!</button>
+            </div>
+
+            <div id="signupContainer" style="display: none;">
+                <h2>Sign Up</h2>
+                <form id="signupForm">
+                    <input type="text" id="signupUsername" placeholder="Username" required />
+                    <input type="text" id="signupFirstName" placeholder="First Name" required />
+                    <input type="text" id="signupLastName" placeholder="Last Name" required />
+                    <input type="email" id="signupEmail" placeholder="Email" required />
+                    <input type="password" id="signupPassword" placeholder="Password" required />
+                    <button type="submit">Sign Up</button>
+                </form>
+                <p id="signupMessage"></p>
+                <button id="showLogin">Already have an account? Login</button>
+            </div>
+        </section>
+
+        <section id="profileSection" style="display: none;">
+            <h2>Welcome, <span id="profileName"></span>!</h2>
+            <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+            <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+            <button id="logoutButton">Logout</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser.user) {
+                showProfile(storedUser.user);
+            } else {
+                showLogin();
+            }
+        });
+    
+        document.getElementById("loginForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const username = document.getElementById("loginUsername").value;
+            const password = document.getElementById("loginPassword").value;
+    
+            try {
+                const response = await fetch("/users/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password }),
+                });
+    
+                if (response.ok) {
+                    const user = await response.json();
+                    localStorage.setItem("user", JSON.stringify(user));
+                    showProfile(user.user);
+                } else {
+                    const error = await response.json();
+                    document.getElementById("loginMessage").innerText = error.message || "Login failed.";
+                }
+            } catch (error) {
+                console.error("Error logging in:", error);
+                document.getElementById("loginMessage").innerText = "An error occurred. Please try again.";
+            }
+        });
+    
+        document.getElementById("signupForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+            const user = {
+                username: document.getElementById("signupUsername").value,
+                firstName: document.getElementById("signupFirstName").value,
+                lastName: document.getElementById("signupLastName").value,
+                email: document.getElementById("signupEmail").value,
+                password: document.getElementById("signupPassword").value,
+            };
+    
+            try {
+                const response = await fetch("/users/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(user),
+                });
+    
+                if (response.ok) {
+                    document.getElementById("signupMessage").innerText = "Sign up successful! You can now log in.";
+                    showLogin();
+                } else {
+                    const error = await response.json();
+                    document.getElementById("signupMessage").innerText = error.message || "Sign up failed.";
+                }
+            } catch (error) {
+                console.error("Error signing up:", error);
+                document.getElementById("signupMessage").innerText = "An error occurred. Please try again.";
+            }
+        });
+    
+        document.getElementById("logoutButton").addEventListener("click", function () {
+            localStorage.removeItem("user"); // Clear user data
+            document.getElementById("profileSection").style.display = "none"; // Hide profile section
+            showLogin(); // Show login section
+            window.location.reload()
+        });
+    
+        document.getElementById("showSignup").addEventListener("click", showSignup);
+        document.getElementById("showLogin").addEventListener("click", showLogin);
+    
+        function showLogin() {
+            document.getElementById("loginContainer").style.display = "block";
+            document.getElementById("signupContainer").style.display = "none";
+            document.getElementById("profileSection").style.display = "none";
+        }
+    
+        function showSignup() {
+            document.getElementById("loginContainer").style.display = "none";
+            document.getElementById("signupContainer").style.display = "block";
+            document.getElementById("profileSection").style.display = "none";
+        }
+    
+        function showProfile(user) {
+        if (!user) {
+            console.warn("User data missing. Retrying to fetch from localStorage...");
+            setTimeout(() => {
+                window.location.reload()
+            }, 100);
+            return;
+        }
+        document.getElementById("authSection").style.display = "none";
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("signupContainer").style.display = "none";
+        document.getElementById("profileSection").style.display = "block";
+        document.getElementById("profileName").innerText = `${user.firstName} ${user.lastName}`;
+        document.getElementById("profileUsername").innerText = user.username;
+        document.getElementById("profileEmail").innerText = user.email;
+    }
+
+    </script>
+    
+</body>
+</html>

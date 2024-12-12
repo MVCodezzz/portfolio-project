@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Recipes List - Recipe Finder</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+  <style>
+    .recipes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      justify-items: center;
+    }
+  
+    .recipe-card {
+      border: 1px solid #f1efef;
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      background-color: #ffffff;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer; /* Adding cursor pointer to indicate it's clickable */
+    }
+  
+    .recipe-card img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+  
+    .recipe-card h3 {
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #333;
+    }
+  
+    .recipe-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+  
+  <body>
+    <header>
+      <h1>Recipes List</h1>
+    </header>
+
+    <nav>
+      <a href="/">Home</a>
+      <a href="search-recipes">Search Recipes</a>
+      <a href="recipe-list" class="active">Recipe List</a>
+      <a href="profile">Profile</a>
+    </nav>
+
+    <main>
+      <section>
+        <div class="recipes-container" id="recipesContainer">
+          <!-- Recipes will be dynamically inserted here -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Fetch all recipes from the API
+      async function fetchAllRecipes() {
+        try {
+          const response = await fetch("/recipes/all");
+          const data = await response.json();
+
+          const recipesContainer = document.getElementById("recipesContainer");
+          recipesContainer.innerHTML = ""; // Clear any existing recipes
+
+          if (data.recipes && data.recipes.length > 0) {
+            data.recipes.forEach((recipe) => {
+              const recipeCard = document.createElement("div");
+              recipeCard.className = "recipe-card";
+              recipeCard.style.margin = "15px 0";
+              recipeCard.style.padding = "10px";
+              recipeCard.style.borderRadius = "8px";
+              recipeCard.style.textAlign = "center";
+
+              recipeCard.innerHTML = `
+                <img src="${recipe.image}" alt="${recipe.name}" style="max-width: 40%; border-radius: 8px;" />
+                <h3>${recipe.name}</h3>
+              `;
+
+              // Add click event to redirect to recipe details page
+              recipeCard.addEventListener("click", function() {
+                window.location.href = `/recipe-details/${recipe.id}`; // Navigates to the recipe details page
+              });
+
+              recipesContainer.appendChild(recipeCard);
+            });
+          } else {
+            recipesContainer.innerHTML = "<p>No recipes found.</p>";
+          }
+        } catch (error) {
+          console.error("Error fetching all recipes:", error);
+          document.getElementById("recipesContainer").innerHTML =
+            "<p>There was an error loading the recipes. Please try again later.</p>";
+        }
+      }
+
+      // Fetch recipes on page load
+      window.onload = fetchAllRecipes;
+    </script>
+  </body>
+</html>

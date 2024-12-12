@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Search Recipes - Recipe Finder</title>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Search Recipes</h1>
+    </header>
+
+    <nav>
+      <a href="/">Home</a>
+      <!-- <a href="add-ingredient">Add Ingredient</a> -->
+      <a href="search-recipes" class="active">Search Recipes</a>
+      <a href="recipe-list">Recipe List</a>
+      <a href="profile">Profile</a>
+    </nav>
+
+    <main>
+      <section>
+        <h2>Find Recipes by Ingredient</h2>
+        <form id="searchForm" method="GET">
+          <input
+            type="text"
+            id="ingredientInput"
+            name="ingredient"
+            placeholder="Enter an ingredient"
+            required
+          />
+          <button type="submit">Search</button>
+        </form>
+        <div id="results" style="margin-top: 20px;">
+          <!-- Results will be displayed here -->
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.getElementById("searchForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const ingredient = document.getElementById("ingredientInput").value;
+
+        // Call the API
+        try {
+          const response = await fetch(`/recipes/search?ingredient=${encodeURIComponent(ingredient)}`);
+          const data = await response.json();
+          console.log('response: ', data)
+
+          // Display results
+          const resultsDiv = document.getElementById("results");
+          resultsDiv.innerHTML = ""; // Clear any previous results
+
+          if (data.recipes && data.recipes.length > 0) {
+            data.recipes.forEach((recipe) => {
+              const recipeCard = document.createElement("div");
+              recipeCard.style.margin = "15px 0";
+              // recipeCard.style.border = "1px solid #ccc";
+              recipeCard.style.padding = "10px";
+              recipeCard.style.borderRadius = "8px";
+              recipeCard.style.textAlign = "center";
+
+              recipeCard.innerHTML = `
+                <img src="${recipe.image}" alt="${recipe.name}" style="max-width: 40%; border-radius: 8px;" />
+                <h3>${recipe.name}</h3>
+              `;
+              resultsDiv.appendChild(recipeCard);
+            });
+          } else {
+            resultsDiv.innerHTML = "<p>No recipes found for this ingredient.</p>";
+          }
+        } catch (error) {
+          console.error("Error fetching recipes:", error);
+          document.getElementById("results").innerHTML =
+            "<p>There was an error fetching the recipes. Please try again later.</p>";
+        }
+      });
+    </script>
+  </body>
+</html>

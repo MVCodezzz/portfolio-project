@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Welcome to Recipe Finder</title>
+    <style>
+      /* General Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        background: linear-gradient(45deg, #1e9bcc, #1478a7);
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 2.0em;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      nav {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #1e9bcc;
+        font-weight: bold;
+        margin: 0 15px;
+        padding: 10px 15px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: #1e9bcc;
+        color: #fff;
+        text-decoration: none;
+      }
+
+      main {
+        flex: 1; /* Pushes the footer to the bottom */
+        padding: 20px;
+      }
+
+      section {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      section h2 {
+        font-size: 2em;
+        margin-bottom: 15px;
+        color: #1478a7;
+      }
+
+      section p {
+        font-size: 1.2em;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      footer {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      footer p {
+        font-size: 0.9em;
+        margin: 0;
+      }
+
+      footer a {
+        color: #1e9bcc;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      .nav-image {
+    text-align: center;
+    margin: 20px auto;
+  }
+
+  nav a.active {
+        background-color: #1e9bcc;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+  .nav-image img {
+    max-height: 250px;
+    width: auto;
+  }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to Recipe Finder</h1>
+    </header>
+
+    <nav>
+      <a href="/" class="active">Home</a>
+      <!-- <a href="add-ingredient">Add Ingredient</a> -->
+      <a href="search-recipes">Search Recipes</a>
+      <a href="recipe-list">Recipe List</a>
+      <a href="profile">Profile</a>
+    </nav>
+
+    <div class="nav-image">
+      <img src="/food_1.png" alt="Delicious Recipes" />
+    </div>
+
+    <main>
+      <section>
+        <h2>Find Your Next Favorite Recipe!</h2>
+        <p>Welcome to Recipe Finder, your go-to platform for exploring, sharing, and discovering amazing recipes. Whether you're a culinary master or just getting started in the kitchen, we've got something for everyone.</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

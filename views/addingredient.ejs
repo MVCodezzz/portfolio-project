@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Add Ingredient - Recipe Finder</title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <style>
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Add Ingredient</h1>
+    </header>
+
+    <nav>
+      <a href="/">Home</a>
+      <a href="add-ingredient" class="active">Add Ingredient</a>
+      <a href="search-recipes">Search Recipes</a>
+      <a href="recipe-list">Recipe List</a>
+      <a href="profile">Profile</a>
+    </nav>
+
+    <main>
+      <section>
+        <h2>Add a New Ingredient</h2>
+        <form action="/ingredients/add" method="POST">
+          <input type="text" name="name" placeholder="Ingredient Name" required />
+          <input type="number" name="quantity" placeholder="Quantity" required min="1" />
+          <br>
+          <button type="submit">Add Ingredient</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Recipe Finder. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
